@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: certbot-job
+  namespace: default
+spec:
+  template:
+    metadata:
+      labels:
+        app: certbot
+    spec:
+      containers:
+      - name: certbot
+        image: eilerb101/certmgr:latest
+        env:
+        - name: KUBECONFIG
+          value: "/root/.kube/config"
+        - name: clusterfqdn
+          valueFrom:
+            configMapKeyRef:
+              name: edns-vars
+              key: clusterfqdn
+        - name: admin_email
+          valueFrom:
+            configMapKeyRef:
+              name: edns-vars
+              key: admin_email
+        volumeMounts:
+        - name: kubeconfig-volume
+          mountPath: "/root/.kube/config"
+          subPath: config
+      volumes:
+      - name: kubeconfig-volume
+        secret:
+          secretName: kcon
+      restartPolicy: OnFailure
