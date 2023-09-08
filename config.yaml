@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cert-vars
+data:
+  #########The next 2 vars are for the cert management
+  clusterfqdn: "myhost.linode.eiler.rocks"
+  admin_email: "beiler@myhost.com"
+ 
