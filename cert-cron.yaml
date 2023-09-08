@@ -20,12 +20,12 @@ spec:
             - name: clusterfqdn
               valueFrom:
                 configMapKeyRef:
-                  name: edns-vars
+                  name: cert-vars
                   key: clusterfqdn
             - name: admin_email
               valueFrom:
                 configMapKeyRef:
-                  name: edns-vars
+                  name: cert-vars
                   key: admin_email
             volumeMounts:
             - name: kubeconfig-volume
