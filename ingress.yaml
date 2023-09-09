@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+    konghq.com/https-status-redirect-code: "301"
+    konghq.com/strip-path: "false"
+    konghq.com/preserve-host: "true"
+    konghq.com/protocols: http,https
+    konghq.com/http-forwarded: "preserve"
+spec:
+  tls:
+    - hosts:
+        - replace.with.your.fqdn
+      secretName: sitecert
+  ingressClassName: kong
+  rules:
+    - host: replace.with.your.fqdn 
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: nginx
+                port:
+                  number: 80
+          - path: /.well-known/acme-challenge
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: certbot
+                port:
+                  number: 80
